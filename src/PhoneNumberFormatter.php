@@ -15,6 +15,7 @@ final class PhoneNumberFormatter
 	public static function fix(string $phone, int $region = 420): string
 	{
 		$phone = (string) preg_replace('/[^\d+]/', '', $phone); // remove spaces
+		$phone = (string) preg_replace('/^0([1-9])/', '$1', $phone); // remove starting zero
 		if (preg_match('/^(?:0{2,}|\+)\s*([1-9]\d{2})\s*(.+)$/', $phone, $phoneRegionParser)) {
 			$region = (int) ($phoneRegionParser[1] ?? throw new \LogicException('Invalid phone prefix.'));
 			$phone = '+' . $region . ($phoneRegionParser[2] ?? '');
