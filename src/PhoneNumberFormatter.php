@@ -24,6 +24,9 @@ final class PhoneNumberFormatter
 		if (preg_match('/^([+0-9]+)/', $phone, $trimUnexpected)) { // remove user notice and unexpected characters
 			$phone = (string) $trimUnexpected[1];
 		}
+		if ($region >= 100 && $region <= 999 && str_starts_with($phone, (string) $region)) {
+			$phone = (string) (substr($phone, 3) ?: $phone);
+		}
 		if (preg_match('/^\+(4\d{2})(\d{3})(\d{3})(\d{3})$/', $phone, $prefixParser)) { // +420 xxx xxx xxx
 			$phone = '+' . $prefixParser[1] . ' ' . $prefixParser[2] . ' ' . $prefixParser[3] . ' ' . $prefixParser[4];
 		} elseif (preg_match('/^\+(4\d{2})(\d+)$/', $phone, $prefixSimpleParser)) { // +420 xxx
