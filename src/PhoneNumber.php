@@ -30,6 +30,6 @@ final class PhoneNumber
 
 	public function getRegion(): int
 	{
-		return (int) preg_replace('/^+(\d+).+?$/', '$1', $this->number);
+		return (int) preg_replace('/^\+(\d+).+?$/', '$1', $this->number);
 	}
 }
