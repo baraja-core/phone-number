@@ -25,6 +25,7 @@ final class PhoneNumberFormatter
 		}
 		if ($region >= 100 && $region <= 999 && str_starts_with($phone, (string) $region)) {
 			$phoneWithoutPrefix = substr($phone, 3);
+			/** @phpstan-ignore-next-line */
 			assert(is_string($phoneWithoutPrefix));
 			$phone = $phoneWithoutPrefix === '' ? $phone : $phoneWithoutPrefix;
 		}
