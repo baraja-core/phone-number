@@ -25,7 +25,7 @@ final class PhoneNumberFormatter
 		}
 		if ($region >= 100 && $region <= 999 && str_starts_with($phone, (string) $region)) {
 			$prefix = substr($phone, 3);
-			$phone = $prefix === false ? $phone : $prefix;
+			$phone = $prefix === '' ? $phone : (string) $prefix;
 		}
 		if (preg_match('/^\+(4\d{2})(\d{3})(\d{3})(\d{3})$/', $phone, $prefixParser) === 1) { // +420 xxx xxx xxx
 			$phone = '+' . $prefixParser[1] . ' ' . $prefixParser[2] . ' ' . $prefixParser[3] . ' ' . $prefixParser[4];
