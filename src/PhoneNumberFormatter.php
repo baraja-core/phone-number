@@ -36,9 +36,7 @@ final class PhoneNumberFormatter
 		} elseif (preg_match('/^(\d{3})(\d{3})(\d{3})$/', $phone, $regularParser) === 1) { // numbers only
 			$phone = '+' . $region . ' ' . $regularParser[1] . ' ' . $regularParser[2] . ' ' . $regularParser[3];
 		} else {
-			throw new \InvalidArgumentException(
-				'Phone number "' . $phone . '" for region "' . $region . '" does not exist.',
-			);
+			throw new \InvalidArgumentException(sprintf('Phone number "%s" for region "%s" does not exist.', $phone, $region));
 		}
 
 		return $phone;
