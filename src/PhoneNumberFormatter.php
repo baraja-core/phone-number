@@ -28,8 +28,6 @@ final class PhoneNumberFormatter
 		}
 		if ($region >= 100 && $region <= 999 && str_starts_with($phone, (string) $region)) {
 			$phoneWithoutPrefix = substr($phone, 3);
-			/** @phpstan-ignore-next-line */
-			assert(is_string($phoneWithoutPrefix));
 			$phone = $phoneWithoutPrefix === '' ? $phone : $phoneWithoutPrefix;
 		}
 		if (preg_match('/^\+(4\d{2})(\d{3})(\d{3})(\d{3})$/', $phone, $prefixParser) === 1) { // +420 xxx xxx xxx
