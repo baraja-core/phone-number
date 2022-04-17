@@ -48,8 +48,10 @@ final class PhoneNumber implements \Stringable
 
 	public function toHtmlLink(): string
 	{
-		return '<a href="tel:' . str_replace(' ', '', $this->getNumber()) . '">'
-			. $this->toHtml()
-			. '</a>';
+		return sprintf(
+			'<a href="tel:%s">%s</a>',
+			str_replace(' ', '', $this->getNumber()),
+			$this->toHtml(),
+		);
 	}
 }
