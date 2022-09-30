@@ -35,16 +35,38 @@ final class PhoneNumberFormatter
 				}
 			}
 		}
-		if (preg_match('/^\+(4\d{2})(\d{3})(\d{3})(\d{3})$/', $phone, $prefixParser) === 1) { // +420 xxx xxx xxx
-			$phone = sprintf('+%s %s %s %s', $prefixParser[1], $prefixParser[2], $prefixParser[3], $prefixParser[4]);
-		} elseif (preg_match('/^\+(4\d{2})(\d+)$/', $phone, $prefixSimpleParser) === 1) { // +420 xxx
-			$phone = sprintf('+%s %s', $prefixSimpleParser[1], $prefixSimpleParser[2]);
-		} elseif (preg_match('/^(\d{3,})(\d{3})(\d{3})$/', $phone, $regularParser) === 1) { // numbers only
-			$phone = sprintf('+%s %s %s %s', $region, $regularParser[1], $regularParser[2], $regularParser[3]);
-		} else {
-			throw new \InvalidArgumentException(sprintf('Phone number "%s" for region "%s" does not exist.', $phone, $region));
+		if (preg_match('/^\+(4\d{2})(\d{3})(\d{3})(\d{3})$/', $phone, $prefixParser) === 1) { // +4xx xxx xxx xxx
+			return sprintf('+%s %s %s %s', $prefixParser[1], $prefixParser[2], $prefixParser[3], $prefixParser[4]);
+		}
+		if (preg_match('/^\+(4\d{2})(\d+)$/', $phone, $prefixSimpleParser) === 1) { // +4xx xxx
+			return sprintf('+%s %s', $prefixSimpleParser[1], $prefixSimpleParser[2]);
+		}
+		if (preg_match('/^\+(\d\d?)(\d+)$/', $phone, $prefixSimpleParser) === 1) { // (+x or +xx) xxx
+			return sprintf('+%s %s', $prefixSimpleParser[1], $prefixSimpleParser[2]);
+		}
+		if (preg_match('/^(\d{7,})$/', $phone, $regularParser) === 1) { // numbers only
+			$number = $regularParser[1];
+			$numberParts = [];
+			do {
+				if (preg_match('/^(.*)(\d{3})$/', $number, $numberParser) === 1) {
+					$number = $numberParser[1];
+					$numberParts[] = $numberParser[2];
+					if ($number === '') {
+						break;
+					}
+				} else {
+					$numberParts[] = $number;
+					$number = null;
+				}
+			} while ($number !== null);
+
+			return sprintf(
+				'+%s %s',
+				$region,
+				preg_replace('/^(\d{1,2})\s(\d{3}.*)$/', '$1$2', implode(' ', array_reverse($numberParts))),
+			);
 		}
 
-		return $phone;
+		throw new \InvalidArgumentException(sprintf('Phone number "%s" for region "%s" does not exist.', $phone, $region));
 	}
 }
