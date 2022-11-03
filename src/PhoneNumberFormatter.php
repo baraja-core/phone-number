@@ -24,7 +24,7 @@ final class PhoneNumberFormatter
 			$phone = sprintf('+%s%s', $region, $phoneRegionParser[2] ?? '');
 		}
 		if (preg_match('/^([+0-9]+)/', $phone, $trimUnexpected) === 1) { // remove user notice and unexpected characters
-			$phone = (string) $trimUnexpected[1];
+			$phone = $trimUnexpected[1];
 		}
 		if ($region >= 1 && $region <= 999) {
 			foreach ([(string) $region, '+' . $region] as $try) {
